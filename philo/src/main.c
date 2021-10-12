@@ -6,7 +6,7 @@
 /*   By: flohrel <flohrel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/11 18:01:42 by flohrel           #+#    #+#             */
-/*   Updated: 2021/10/12 17:26:28 by flohrel          ###   ########.fr       */
+/*   Updated: 2021/10/12 19:27:43 by flohrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,8 @@ int	main(int argc, char **argv)
 	init_vars(&vars, &vars.param);
 	if (parse_args(argc, argv, &vars.param) == -1)
 		return (EXIT_FAILURE);
+	init();		// initialize every philosopher and put them around the table (circular chained list)
+	launch();	// create threads, detach them
+	observe();	// create observer thread (waiting for dead philo OR nb_meal == 0) / pthread_join
 	return (0);
 }

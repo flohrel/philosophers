@@ -6,7 +6,7 @@
 /*   By: flohrel <flohrel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 16:44:30 by flohrel           #+#    #+#             */
-/*   Updated: 2021/10/12 17:58:30 by flohrel          ###   ########.fr       */
+/*   Updated: 2021/10/12 19:25:25 by flohrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_vars	t_vars;
 struct	s_philo
 {
 	int				id;
+	pthread			thread;
 	pthread_mutex_t	fork;
 	t_philo			*next;
 };
