@@ -8,15 +8,14 @@ VPATH		=	src
 OBJDIR		=	obj
 INCLDIR		=	incld
 
-MAIN		=	main.c
-UTILS		=
-TEST		=
-SRC			=	$(MAIN) $(UTILS) $(TEST)
+SRC			=	main.c \
+				parse.c
 OBJ			=	$(SRC:%.c=$(OBJDIR)/%.o)
 
 CC			=	gcc
 CFLAGS		=	-Wall -Werror -Wextra -g3
 INCFLAGS	=	-I./$(INCLDIR)
+LFLAGS		=	-lpthread
 RM			=	/bin/rm -rf
 UNAME		:=	$(shell uname -s)
 
@@ -33,7 +32,7 @@ $(OBJDIR)/%.o:	%.c | $(OBJDIR)
 				$(CC) $(CFLAGS) $(INCFLAGS) -c $< -o $@
 
 $(NAME):		$(OBJ)
-				$(CC) $(CFLAGS) -o $@ $^
+				$(CC) $(CFLAGS) -o $@ $^ $(LFLAGS)
 
 $(OBJDIR):
 				mkdir $(OBJDIR)
