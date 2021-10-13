@@ -6,7 +6,7 @@
 /*   By: flohrel <flohrel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/12 17:21:07 by flohrel           #+#    #+#             */
-/*   Updated: 2021/10/12 17:58:49 by flohrel          ###   ########.fr       */
+/*   Updated: 2021/10/13 23:36:06 by flohrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	ft_isdigit(int c)
 	return (!((c > '9') || (c < '0')));
 }
 
-static int	check_of(unsigned int nb, int nptr)
+static int	check_overflow(unsigned int nb, int nptr)
 {
 	unsigned int	n;
 
@@ -32,7 +32,7 @@ static int	check_of(unsigned int nb, int nptr)
 	return (0);
 }
 
-static int	local_atoi(const char *nptr)
+static int	ft_atoi(const char *nptr)
 {
 	int	nb;
 
@@ -42,7 +42,7 @@ static int	local_atoi(const char *nptr)
 	while (*nptr)
 	{
 		if ((!ft_isdigit(*nptr))
-			|| (check_of(nb, *nptr) == -1))
+			|| (check_overflow(nb, *nptr) == -1))
 			return (-1);
 		nb = (nb * 10) + (*nptr - '0');
 		nptr++;
@@ -50,7 +50,7 @@ static int	local_atoi(const char *nptr)
 	return (nb);
 }
 
-int	parse_args(int argc, char **argv, t_param *param)
+int	parser(int argc, char **argv, t_param *param)
 {
 	if ((argc < 5) || (argc > 6))
 		return (-1);

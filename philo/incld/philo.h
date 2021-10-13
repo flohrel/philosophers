@@ -6,7 +6,7 @@
 /*   By: flohrel <flohrel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 16:44:30 by flohrel           #+#    #+#             */
-/*   Updated: 2021/10/12 19:25:25 by flohrel          ###   ########.fr       */
+/*   Updated: 2021/10/13 23:44:21 by flohrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 */
 # include <unistd.h>
 # include <stdio.h>
+# include <stdint.h>
 # include <stdlib.h>
 # include <pthread.h>
 # include <limits.h>
@@ -36,9 +37,10 @@ typedef struct s_vars	t_vars;
 
 struct	s_philo
 {
-	int				id;
-	pthread			thread;
+	uint32_t		id;
+	pthread_t		thread_id;
 	pthread_mutex_t	fork;
+	uint32_t		last_meal;
 	t_philo			*next;
 };
 
@@ -54,12 +56,12 @@ struct	s_param
 struct	s_vars
 {
 	t_param	param;
-	t_philo	*philo;
+	t_philo	*table;
 };
 
 /*
 **		FUNCTION
 */
-int	parse_args(int argc, char **argv, t_param *param);
+int	parser(int argc, char **argv, t_param *param);
 
 #endif
