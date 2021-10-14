@@ -6,7 +6,7 @@
 /*   By: flohrel <flohrel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 16:44:30 by flohrel           #+#    #+#             */
-/*   Updated: 2021/10/14 06:37:27 by flohrel          ###   ########.fr       */
+/*   Updated: 2021/10/14 07:02:34 by flohrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,5 +66,7 @@ struct	s_vars
 */
 int		parser(int argc, char **argv, t_param *param);
 void	ms_sleep(int value);
+void	free_philo(t_philo *philo, uint32_t nb_philo);
+int		philo_init(uint32_t nb_philo, t_philo **table);
 
 #endif
