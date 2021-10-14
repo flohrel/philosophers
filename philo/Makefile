@@ -9,7 +9,8 @@ OBJDIR		=	obj
 INCLDIR		=	incld
 
 SRC			=	main.c \
-				parse.c
+				parse.c \
+				time.c
 OBJ			=	$(SRC:%.c=$(OBJDIR)/%.o)
 
 CC			=	gcc

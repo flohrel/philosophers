@@ -6,7 +6,7 @@
 /*   By: flohrel <flohrel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/12 17:21:07 by flohrel           #+#    #+#             */
-/*   Updated: 2021/10/13 23:36:06 by flohrel          ###   ########.fr       */
+/*   Updated: 2021/10/14 06:07:32 by flohrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,10 @@ int	parser(int argc, char **argv, t_param *param)
 {
 	if ((argc < 5) || (argc > 6))
 		return (-1);
-	param->nb_philo = local_atoi(argv[1]);
-	param->time_to_die = local_atoi(argv[2]);
-	param->time_to_eat = local_atoi(argv[3]);
-	param->time_to_sleep = local_atoi(argv[4]);
+	param->nb_philo = ft_atoi(argv[1]);
+	param->time_to_die = ft_atoi(argv[2]);
+	param->time_to_eat = ft_atoi(argv[3]);
+	param->time_to_sleep = ft_atoi(argv[4]);
 	if ((param->nb_philo < 1) || (param->nb_philo > THREADS_MAX)
 		|| (param->time_to_die < 0)
 		|| (param->time_to_eat < 1)
@@ -65,7 +65,7 @@ int	parser(int argc, char **argv, t_param *param)
 		return (-1);
 	if (argc == 6)
 	{
-		param->nb_eat = local_atoi(argv[5]);
+		param->nb_eat = ft_atoi(argv[5]);
 		if (param->nb_eat < 1)
 			return (-1);
 	}
