@@ -6,7 +6,7 @@
 /*   By: flohrel <flohrel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/14 10:48:05 by flohrel           #+#    #+#             */
-/*   Updated: 2021/10/16 17:55:51 by flohrel          ###   ########.fr       */
+/*   Updated: 2021/10/16 19:48:24 by flohrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ size_t	ft_strlen(const char *s)
 	return (str - s - 1);
 }
 
-void	ft_putchar_fd(char c, int fd)
+void	ft_putchar_fd(int c, int fd)
 {
 	unsigned char	uc;
 

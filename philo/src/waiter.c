@@ -6,7 +6,7 @@
 /*   By: flohrel <flohrel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/16 17:49:43 by flohrel           #+#    #+#             */
-/*   Updated: 2021/10/16 19:32:51 by flohrel          ###   ########.fr       */
+/*   Updated: 2021/10/16 19:47:16 by flohrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	*observe(void *arg)
 	t_vars		*vars;
 	t_param		*param;
 	t_philo		*philo;
-	uint64_t	timestamp;
+	int64_t		timestamp;
 
 	vars = arg;
 	param = &vars->param;

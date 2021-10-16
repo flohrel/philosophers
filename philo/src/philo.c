@@ -6,7 +6,7 @@
 /*   By: flohrel <flohrel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/14 06:58:18 by flohrel           #+#    #+#             */
-/*   Updated: 2021/10/16 19:35:34 by flohrel          ###   ########.fr       */
+/*   Updated: 2021/10/16 19:47:46 by flohrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static t_philo	*get_last(t_philo *philo)
 	return (philo);
 }
 
-int	philo_init(uint32_t nb_philo, t_philo **table, t_param *param)
+int	philo_init(int32_t nb_philo, t_philo **table, t_param *param)
 {
 	uint32_t	i;
 	t_philo		*philo;
@@ -68,7 +68,7 @@ void	*routine(void *arg)
 	return (NULL);
 }
 
-void	philosophers(uint32_t nb_philo, t_philo *philo)
+void	philosophers(int32_t nb_philo, t_philo *philo)
 {
 	int	i;
 
@@ -81,10 +81,10 @@ void	philosophers(uint32_t nb_philo, t_philo *philo)
 	}
 }
 
-void	free_philo(t_philo *philo, uint32_t nb_philo)
+void	free_philo(t_philo *philo, int32_t nb_philo)
 {
-	uint32_t	i;
-	t_philo		*next;
+	int32_t	i;
+	t_philo	*next;
 
 	i = -1;
 	while (++i < nb_philo)
