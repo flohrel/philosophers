@@ -6,18 +6,11 @@
 /*   By: flohrel <flohrel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/14 06:58:18 by flohrel           #+#    #+#             */
-/*   Updated: 2021/10/16 19:47:46 by flohrel          ###   ########.fr       */
+/*   Updated: 2021/10/16 20:24:44 by flohrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-static t_philo	*get_last(t_philo *philo)
-{
-	while (philo->next != NULL)
-		philo = philo->next;
-	return (philo);
-}
 
 int	philo_init(int32_t nb_philo, t_philo **table, t_param *param)
 {
@@ -43,6 +36,20 @@ int	philo_init(int32_t nb_philo, t_philo **table, t_param *param)
 	return (0);
 }
 
+void	eat(t_philo *philo, t_param *param)
+{
+	pthread_mutex_lock(&philo->fork);
+	timestamp_msg(philo->id, "has taken a fork", param->start_time);
+	pthread_mutex_lock(&philo->next->fork);
+	timestamp_msg(philo->id, "has taken a fork", param->start_time);
+	timestamp_msg(philo->id, "is eating", param->start_time);
+	ms_sleep(param->time_to_eat);
+	philo->last_meal = get_ms_time() - param->start_time;
+	philo->nb_meal++;
+	pthread_mutex_unlock(&philo->fork);
+	pthread_mutex_unlock(&philo->next->fork);
+}
+
 void	*routine(void *arg)
 {
 	t_philo	*philo;
@@ -50,17 +57,16 @@ void	*routine(void *arg)
 
 	philo = arg;
 	param = philo->param;
+	if (philo->id % 2 == 0)
+		ms_sleep(1);
 	while (param->has_ended == false)
 	{
-		pthread_mutex_lock(&philo->fork);
-		timestamp_msg(philo->id, "has taken a fork", param->start_time);
-		pthread_mutex_lock(&philo->next->fork);
-		timestamp_msg(philo->id, "has taken a fork", param->start_time);
-		timestamp_msg(philo->id, "is eating", param->start_time);
-		ms_sleep(param->time_to_eat);
-		philo->last_meal = get_ms_time() - param->start_time;
-		pthread_mutex_unlock(&philo->fork);
-		pthread_mutex_unlock(&philo->next->fork);
+		eat(philo, param);
+		if (philo->nb_meal == param->nb_eat)
+		{
+			param->nb_philo--;
+			break ;
+		}
 		timestamp_msg(philo->id, "is sleeping", param->start_time);
 		ms_sleep(param->time_to_sleep);
 		timestamp_msg(philo->id, "is thinking", param->start_time);

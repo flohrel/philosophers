@@ -6,7 +6,7 @@
 /*   By: flohrel <flohrel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/16 17:49:43 by flohrel           #+#    #+#             */
-/*   Updated: 2021/10/16 19:47:16 by flohrel          ###   ########.fr       */
+/*   Updated: 2021/10/16 20:24:23 by flohrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ void	*observe(void *arg)
 			param->has_ended = true;
 			break ;
 		}
+		if (param->nb_philo == 0)
+			break ;
 		philo = philo->next;
 	}
 	return (NULL);

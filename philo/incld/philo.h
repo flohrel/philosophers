@@ -6,7 +6,7 @@
 /*   By: flohrel <flohrel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 16:44:30 by flohrel           #+#    #+#             */
-/*   Updated: 2021/10/16 19:48:48 by flohrel          ###   ########.fr       */
+/*   Updated: 2021/10/16 20:15:38 by flohrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,7 @@ struct	s_vars
 /*
 **		FUNCTION
 */
-size_t		ft_strlen(const char *s);
-void		ft_putchar_fd(int c, int fd);
-size_t		ft_putstr_fd(char *s, int fd);
-void		ft_putnbr_fd(int n, int fd);
+t_philo		*get_last(t_philo *philo);
 int			parser(int argc, char **argv, t_param *param);
 int64_t		get_ms_time(void);
 void		ms_sleep(int64_t value);
