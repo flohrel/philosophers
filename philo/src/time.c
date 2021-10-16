@@ -6,23 +6,23 @@
 /*   By: flohrel <flohrel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/14 06:12:08 by flohrel           #+#    #+#             */
-/*   Updated: 2021/10/16 18:36:17 by flohrel          ###   ########.fr       */
+/*   Updated: 2021/10/16 19:17:20 by flohrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-suseconds_t	get_usec_time(void)
+uint64_t	get_ms_time(void)
 {
 	struct timeval	time;
 
 	gettimeofday(&time, NULL);
-	return (time.tv_usec);
+	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
 }
 
 void	timestamp_msg(uint32_t id, char *msg, suseconds_t start_time)
 {
-	ft_putnbr_fd((get_usec_time() - start_time) / 1000, STDOUT_FILENO);
+	ft_putnbr_fd((get_ms_time() - start_time), STDOUT_FILENO);
 	ft_putstr_fd("ms ", STDOUT_FILENO);
 	ft_putnbr_fd(id, STDOUT_FILENO);
 	ft_putchar_fd(' ', STDOUT_FILENO);
@@ -30,17 +30,13 @@ void	timestamp_msg(uint32_t id, char *msg, suseconds_t start_time)
 	ft_putchar_fd('\n', STDOUT_FILENO);
 }
 
-void	ms_sleep(int value)
+void	ms_sleep(uint64_t value)
 {
-	struct timeval	start;
-	struct timeval	cur;
+	uint64_t	start;
 
-	gettimeofday(&start, NULL);
-	cur = start;
-	value *= 1000;
-	while ((cur.tv_usec - start.tv_usec) < value)
+	start = get_ms_time();
+	while ((get_ms_time() - start) < value)
 	{
-		usleep(500);
-		gettimeofday(&cur, NULL);
+		usleep(1);
 	}
 }

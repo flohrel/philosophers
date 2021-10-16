@@ -6,7 +6,7 @@
 /*   By: flohrel <flohrel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 16:44:30 by flohrel           #+#    #+#             */
-/*   Updated: 2021/10/16 18:34:40 by flohrel          ###   ########.fr       */
+/*   Updated: 2021/10/16 19:16:36 by flohrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,21 +42,20 @@ struct	s_philo
 	uint32_t		id;
 	pthread_t		thread_id;
 	pthread_mutex_t	fork;
-	suseconds_t		last_meal;
+	uint64_t		last_meal;
 	int				nb_meal;
-	bool			is_alive;
 	t_param			*param;
 	t_philo			*next;
 };
 
 struct	s_param
 {
-	int			nb_philo;
-	int			time_to_die;
-	int			time_to_eat;
-	int			time_to_sleep;
-	int			nb_eat;
-	suseconds_t	start_time;
+	uint32_t	nb_philo;
+	uint64_t	time_to_die;
+	uint64_t	time_to_eat;
+	uint64_t	time_to_sleep;
+	uint32_t	nb_eat;
+	uint64_t	start_time;
 	bool		has_ended;
 };
 
@@ -74,8 +73,8 @@ int			ft_putchar_fd(int c, int fd);
 size_t		ft_putstr_fd(char *s, int fd);
 void		ft_putnbr_fd(int n, int fd);
 int			parser(int argc, char **argv, t_param *param);
-suseconds_t	get_usec_time(void);
-void		ms_sleep(int value);
+uint64_t	get_ms_time(void);
+void		ms_sleep(uint64_t value);
 void		timestamp_msg(uint32_t id, char *msg, suseconds_t start_time);
 void		free_philo(t_philo *philo, uint32_t nb_philo);
 int			philo_init(uint32_t nb_philo, t_philo **table, t_param *param);
