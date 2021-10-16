@@ -10,7 +10,10 @@ INCLDIR		=	incld
 
 SRC			=	main.c \
 				parse.c \
-				time.c
+				philo.c \
+				time.c \
+				utils.c \
+				waiter.c
 OBJ			=	$(SRC:%.c=$(OBJDIR)/%.o)
 
 CC			=	gcc
