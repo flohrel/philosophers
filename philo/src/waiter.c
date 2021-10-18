@@ -6,7 +6,7 @@
 /*   By: flohrel <flohrel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/16 17:49:43 by flohrel           #+#    #+#             */
-/*   Updated: 2021/10/18 13:51:33 by flohrel          ###   ########.fr       */
+/*   Updated: 2021/10/18 14:12:16 by flohrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,10 @@
 
 void	waiter(t_vars *vars)
 {
-//	t_vars		*vars;
 	t_param		*param;
 	t_philo		*philo;
 	int64_t		timestamp;
 
-//	vars = arg;
 	param = &vars->param;
 	philo = vars->table;
 	while (1)
@@ -36,11 +34,3 @@ void	waiter(t_vars *vars)
 		philo = philo->next;
 	}
 }
-
-/*void	waiter(t_vars *vars)
-{
-	pthread_t	thread_id;
-
-	pthread_create(&thread_id, NULL, observe, vars);
-	pthread_join(thread_id, NULL);
-}*/

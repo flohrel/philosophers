@@ -6,7 +6,7 @@
 /*   By: flohrel <flohrel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/14 06:12:08 by flohrel           #+#    #+#             */
-/*   Updated: 2021/10/18 13:48:06 by flohrel          ###   ########.fr       */
+/*   Updated: 2021/10/18 14:22:06 by flohrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	timestamp_msg(int32_t id, char *msg, int64_t start_time)
 	int64_t	timestamp;
 
 	timestamp = get_ms_time() - start_time;
-	printf("%ldms %d %s\n", timestamp, id, msg);
+	printf("%lldms %d %s\n", timestamp, id, msg);
 }
 
 void	ms_sleep(int64_t value)
@@ -35,6 +35,6 @@ void	ms_sleep(int64_t value)
 	start = get_ms_time();
 	while ((get_ms_time() - start) < value)
 	{
-		usleep(1000);
+		usleep(500);
 	}
 }
