@@ -6,7 +6,7 @@
 /*   By: flohrel <flohrel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/16 17:49:43 by flohrel           #+#    #+#             */
-/*   Updated: 2021/10/18 10:31:02 by flohrel          ###   ########.fr       */
+/*   Updated: 2021/10/16 20:24:23 by flohrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,8 @@ void	*observe(void *arg)
 	while (1)
 	{
 		timestamp = get_ms_time() - param->start_time;
-		if ((timestamp - philo->last_meal) > param->time_to_die)
+		if ((timestamp - philo->last_meal) >= param->time_to_die)
 		{
-			printf("timestamp:%ld last:%ld\n", timestamp, philo->last_meal);
 			timestamp_msg(philo->id, "died", param->start_time);
 			param->has_ended = true;
 			break ;
