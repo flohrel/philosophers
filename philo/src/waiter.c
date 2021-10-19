@@ -6,7 +6,7 @@
 /*   By: flohrel <flohrel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/16 17:49:43 by flohrel           #+#    #+#             */
-/*   Updated: 2021/10/18 14:12:16 by flohrel          ###   ########.fr       */
+/*   Updated: 2021/10/19 01:36:46 by flohrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	waiter(t_vars *vars)
 		timestamp = get_ms_time() - param->start_time;
 		if ((timestamp - philo->last_meal) > param->time_to_die)
 		{
+			ms_sleep(5);
 			timestamp_msg(philo->id, "died", param->start_time);
 			param->has_ended = true;
 			break ;
