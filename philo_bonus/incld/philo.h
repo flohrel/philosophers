@@ -6,7 +6,7 @@
 /*   By: flohrel <flohrel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 16:44:30 by flohrel           #+#    #+#             */
-/*   Updated: 2021/10/16 20:15:38 by flohrel          ###   ########.fr       */
+/*   Updated: 2021/10/21 11:17:40 by flohrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@
 # include <stdint.h>
 # include <stdlib.h>
 # include <pthread.h>
+# include <semaphore.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 # include <sys/time.h>
 # include <limits.h>
 # include <stdbool.h>
@@ -40,8 +43,7 @@ typedef struct s_vars	t_vars;
 struct	s_philo
 {
 	int32_t			id;
-	pthread_t		thread_id;
-	pthread_mutex_t	fork;
+	pid_t			pid;
 	int64_t			last_meal;
 	int32_t			nb_meal;
 	t_param			*param;

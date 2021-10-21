@@ -6,7 +6,7 @@
 /*   By: flohrel <flohrel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/14 06:58:18 by flohrel           #+#    #+#             */
-/*   Updated: 2021/10/16 20:24:44 by flohrel          ###   ########.fr       */
+/*   Updated: 2021/10/21 11:14:34 by flohrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ int	philo_init(int32_t nb_philo, t_philo **table, t_param *param)
 		philo->id = i;
 		philo->last_meal = -1;
 		philo->param = param;
-		pthread_mutex_init(&philo->fork, NULL);
 		philo->next = *table;
 		*table = philo;
 	}
@@ -76,13 +75,19 @@ void	*routine(void *arg)
 
 void	philosophers(int32_t nb_philo, t_philo *philo)
 {
-	int	i;
+	int		i;
+	pid_t	pid;
 
 	i = nb_philo;
 	while (i--)
 	{
-		pthread_create(&philo->thread_id, NULL, routine, philo);
-		pthread_detach(philo->thread_id);
+		pid = fork();
+		if (pid == -1)
+			clean_exit();				// TODO
+		else if (pid != 0)
+			philo->pid = pid;
+		else
+			routine();
 		philo = philo->next;
 	}
 }
@@ -96,7 +101,6 @@ void	free_philo(t_philo *philo, int32_t nb_philo)
 	while (++i < nb_philo)
 	{
 		next = philo->next;
-		pthread_mutex_destroy(&philo->fork);
 		free(philo);
 		philo = next;
 	}

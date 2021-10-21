@@ -6,7 +6,7 @@
 /*   By: flohrel <flohrel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/16 17:49:43 by flohrel           #+#    #+#             */
-/*   Updated: 2021/10/16 20:24:23 by flohrel          ###   ########.fr       */
+/*   Updated: 2021/10/21 11:17:14 by flohrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,13 @@ void	*observe(void *arg)
 	return (NULL);
 }
 
-void	waiter(t_vars *vars)
+void	waiter(t_param *param, t_vars *vars)
 {
-	pthread_t	thread_id;
+	int	i;
 
-	pthread_create(&thread_id, NULL, observe, vars);
-	pthread_join(thread_id, NULL);
+	i = -1;
+	while (++i < param->nb_philo)
+	{
+		waitpid();
+	}
 }
