@@ -6,7 +6,7 @@
 /*   By: flohrel <flohrel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/11 18:01:42 by flohrel           #+#    #+#             */
-/*   Updated: 2021/10/18 13:51:10 by flohrel          ###   ########.fr       */
+/*   Updated: 2021/10/26 20:56:33 by flohrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,25 @@ void	vars_init(t_vars *vars, t_param *param)
 	param->nb_eat = -1;
 	param->has_ended = false;
 	param->start_time = get_ms_time();
+	pthread_mutex_init(&param->lock, NULL);
+	pthread_mutex_init(&param->message, NULL);
 }
 
 int	clean_exit(int ret_value, t_vars *vars)
 {
+	t_param	*param;
+
+	param = &vars->param;
+	pthread_mutex_lock(&param->lock);
 	free_philo(vars->table, vars->param.nb_philo);
+	pthread_mutex_unlock(&param->lock);
+	pthread_mutex_destroy(&param->lock);
 	return (ret_value);
 }
 
 int	main(int argc, char **argv)
 {
+	int		i;
 	t_vars	vars;
 
 	vars_init(&vars, &vars.param);
@@ -39,7 +48,8 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	if (philo_init(vars.param.nb_philo, &vars.table, &vars.param) == -1)
 		return (clean_exit(EXIT_FAILURE, &vars));
+	i = vars.param.nb_philo;
 	philosophers(vars.param.nb_philo, vars.table);
-	waiter(&vars);
+	waiter(&vars, i);
 	return (clean_exit(EXIT_SUCCESS, &vars));
 }

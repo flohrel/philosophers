@@ -6,7 +6,7 @@
 /*   By: flohrel <flohrel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/14 06:12:08 by flohrel           #+#    #+#             */
-/*   Updated: 2021/10/19 01:35:17 by flohrel          ###   ########.fr       */
+/*   Updated: 2021/10/26 20:55:20 by flohrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,17 @@ int64_t	get_ms_time(void)
 	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
 }
 
-void	timestamp_msg(int32_t id, char *msg, int64_t start_time)
+void	timestamp_msg(int32_t id, char *msg, int64_t start_time, t_param *param)
 {
 	int64_t	timestamp;
 
-	timestamp = get_ms_time() - start_time;
-	printf("%ldms %d %s\n", timestamp, id, msg);
+	pthread_mutex_lock(&param->lock);
+	if (param->has_ended == false)
+	{
+		timestamp = get_ms_time() - start_time;
+		printf("%ldms %d %s\n", timestamp, id, msg);
+	}
+	pthread_mutex_unlock(&param->lock);
 }
 
 void	ms_sleep(int64_t value)

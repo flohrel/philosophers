@@ -6,7 +6,7 @@
 /*   By: flohrel <flohrel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/14 06:58:18 by flohrel           #+#    #+#             */
-/*   Updated: 2021/10/18 10:25:05 by flohrel          ###   ########.fr       */
+/*   Updated: 2021/10/26 20:46:09 by flohrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,15 @@ int	philo_init(int32_t nb_philo, t_philo **table, t_param *param)
 void	eat(t_philo *philo, t_param *param)
 {
 	pthread_mutex_lock(&philo->fork);
-	timestamp_msg(philo->id, "has taken a fork", param->start_time);
+	timestamp_msg(philo->id, "has taken a fork", param->start_time, param);
 	pthread_mutex_lock(&philo->next->fork);
-	timestamp_msg(philo->id, "has taken a fork", param->start_time);
-	timestamp_msg(philo->id, "is eating", param->start_time);
+	timestamp_msg(philo->id, "has taken a fork", param->start_time, param);
+	timestamp_msg(philo->id, "is eating", param->start_time, param);
 	ms_sleep(param->time_to_eat);
+	pthread_mutex_lock(&param->lock);
 	philo->last_meal = get_ms_time() - param->start_time;
 	philo->nb_meal++;
+	pthread_mutex_unlock(&param->lock);
 	pthread_mutex_unlock(&philo->fork);
 	pthread_mutex_unlock(&philo->next->fork);
 }
@@ -58,18 +60,21 @@ void	*routine(void *arg)
 	philo = arg;
 	param = philo->param;
 	if (philo->id % 2 == 0)
-		ms_sleep(1);
-	while (param->has_ended == false)
+		ms_sleep(5);
+	while (1)
 	{
-		eat(philo, param);
-		if (philo->nb_meal == param->nb_eat)
+		pthread_mutex_lock(&param->lock);
+		if ((philo->nb_meal == param->nb_eat) || (param->has_ended == true))
 		{
 			param->nb_philo--;
+			pthread_mutex_unlock(&param->lock);
 			break ;
 		}
-		timestamp_msg(philo->id, "is sleeping", param->start_time);
+		pthread_mutex_unlock(&param->lock);
+		eat(philo, param);
+		timestamp_msg(philo->id, "is sleeping", param->start_time, param);
 		ms_sleep(param->time_to_sleep);
-		timestamp_msg(philo->id, "is thinking", param->start_time);
+		timestamp_msg(philo->id, "is thinking", param->start_time, param);
 	}
 	return (NULL);
 }
