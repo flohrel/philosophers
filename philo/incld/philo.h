@@ -6,7 +6,7 @@
 /*   By: flohrel <flohrel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 16:44:30 by flohrel           #+#    #+#             */
-/*   Updated: 2021/10/26 20:45:34 by flohrel          ###   ########.fr       */
+/*   Updated: 2021/10/26 21:14:21 by flohrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,6 @@ void		timestamp_msg(int32_t id, char *msg, int64_t start_time, t_param *param);
 void		free_philo(t_philo *philo, int32_t nb_philo);
 int			philo_init(int32_t nb_philo, t_philo **table, t_param *param);
 void		philosophers(int32_t nb_philo, t_philo *philo);
-void		waiter(t_vars *vars, int i);
+void		waiter(t_vars *vars);
 
 #endif

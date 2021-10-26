@@ -6,7 +6,7 @@
 /*   By: flohrel <flohrel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/14 06:58:18 by flohrel           #+#    #+#             */
-/*   Updated: 2021/10/26 20:46:09 by flohrel          ###   ########.fr       */
+/*   Updated: 2021/10/27 01:26:55 by flohrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,13 @@ void	eat(t_philo *philo, t_param *param)
 	pthread_mutex_lock(&philo->next->fork);
 	timestamp_msg(philo->id, "has taken a fork", param->start_time, param);
 	timestamp_msg(philo->id, "is eating", param->start_time, param);
-	ms_sleep(param->time_to_eat);
 	pthread_mutex_lock(&param->lock);
 	philo->last_meal = get_ms_time() - param->start_time;
 	philo->nb_meal++;
 	pthread_mutex_unlock(&param->lock);
-	pthread_mutex_unlock(&philo->fork);
+	ms_sleep(param->time_to_eat);
 	pthread_mutex_unlock(&philo->next->fork);
+	pthread_mutex_unlock(&philo->fork);
 }
 
 void	*routine(void *arg)

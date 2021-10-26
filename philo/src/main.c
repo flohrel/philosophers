@@ -6,7 +6,7 @@
 /*   By: flohrel <flohrel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/11 18:01:42 by flohrel           #+#    #+#             */
-/*   Updated: 2021/10/26 20:56:33 by flohrel          ###   ########.fr       */
+/*   Updated: 2021/10/26 21:13:11 by flohrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ int	main(int argc, char **argv)
 		return (clean_exit(EXIT_FAILURE, &vars));
 	i = vars.param.nb_philo;
 	philosophers(vars.param.nb_philo, vars.table);
-	waiter(&vars, i);
+	waiter(&vars);
+	while (i--)
+		ms_sleep(vars.param.time_to_eat + vars.param.time_to_sleep);
 	return (clean_exit(EXIT_SUCCESS, &vars));
 }

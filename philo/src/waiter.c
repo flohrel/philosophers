@@ -6,13 +6,13 @@
 /*   By: flohrel <flohrel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/16 17:49:43 by flohrel           #+#    #+#             */
-/*   Updated: 2021/10/26 20:53:20 by flohrel          ###   ########.fr       */
+/*   Updated: 2021/10/26 21:14:05 by flohrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	waiter(t_vars *vars, int i)
+void	waiter(t_vars *vars)
 {
 	t_param		*param;
 	t_philo		*philo;
@@ -28,9 +28,6 @@ void	waiter(t_vars *vars, int i)
 		{
 			printf("%ldms %d died\n", timestamp, philo->id);
 			param->has_ended = true;
-			pthread_mutex_unlock(&param->lock);
-			while (i--)
-				ms_sleep(param->time_to_eat + param->time_to_sleep);
 			break ;
 		}
 		if (param->nb_philo == 0)
@@ -38,4 +35,5 @@ void	waiter(t_vars *vars, int i)
 		pthread_mutex_unlock(&param->lock);
 		philo = philo->next;
 	}
+	pthread_mutex_unlock(&param->lock);
 }
