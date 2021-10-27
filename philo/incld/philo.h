@@ -6,7 +6,7 @@
 /*   By: flohrel <flohrel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 16:44:30 by flohrel           #+#    #+#             */
-/*   Updated: 2021/10/26 21:14:21 by flohrel          ###   ########.fr       */
+/*   Updated: 2021/10/27 17:38:38 by flohrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ struct	s_philo
 	pthread_mutex_t	fork;
 	int64_t			last_meal;
 	int32_t			nb_meal;
+	bool			has_finished;
 	t_param			*param;
 	t_philo			*next;
 };
@@ -74,7 +75,8 @@ t_philo		*get_last(t_philo *philo);
 int			parser(int argc, char **argv, t_param *param);
 int64_t		get_ms_time(void);
 void		ms_sleep(int64_t value);
-void		timestamp_msg(int32_t id, char *msg, int64_t start_time, t_param *param);
+void		timestamp_msg(int32_t id, char *msg, int64_t start_time,
+				t_param *param);
 void		free_philo(t_philo *philo, int32_t nb_philo);
 int			philo_init(int32_t nb_philo, t_philo **table, t_param *param);
 void		philosophers(int32_t nb_philo, t_philo *philo);

@@ -6,7 +6,7 @@
 /*   By: flohrel <flohrel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/16 17:49:43 by flohrel           #+#    #+#             */
-/*   Updated: 2021/10/26 21:14:05 by flohrel          ###   ########.fr       */
+/*   Updated: 2021/10/27 17:06:53 by flohrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ void	waiter(t_vars *vars)
 	{
 		timestamp = get_ms_time() - param->start_time;
 		pthread_mutex_lock(&param->lock);
-		if ((timestamp - philo->last_meal) > param->time_to_die)
+		if (!philo->has_finished
+			&& (timestamp - philo->last_meal) > param->time_to_die)
 		{
 			printf("%ldms %d died\n", timestamp, philo->id);
 			param->has_ended = true;

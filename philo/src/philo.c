@@ -6,7 +6,7 @@
 /*   By: flohrel <flohrel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/14 06:58:18 by flohrel           #+#    #+#             */
-/*   Updated: 2021/10/27 01:26:55 by flohrel          ###   ########.fr       */
+/*   Updated: 2021/10/27 17:08:04 by flohrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	philo_init(int32_t nb_philo, t_philo **table, t_param *param)
 			return (-1);
 		philo->id = i;
 		philo->last_meal = -1;
+		philo->has_finished = false;
 		philo->param = param;
 		pthread_mutex_init(&philo->fork, NULL);
 		philo->next = *table;
@@ -66,6 +67,7 @@ void	*routine(void *arg)
 		pthread_mutex_lock(&param->lock);
 		if ((philo->nb_meal == param->nb_eat) || (param->has_ended == true))
 		{
+			philo->has_finished = true;
 			param->nb_philo--;
 			pthread_mutex_unlock(&param->lock);
 			break ;
