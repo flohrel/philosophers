@@ -2,13 +2,14 @@
 ## Variables ##
 ###############
 
-NAME		=	philo_bonus
+NAME		=	philo
 
 VPATH		=	src
 OBJDIR		=	obj
 INCLDIR		=	incld
 
 SRC			=	main.c \
+				init.c \
 				parse.c \
 				philo.c \
 				time.c \
@@ -17,7 +18,7 @@ SRC			=	main.c \
 OBJ			=	$(SRC:%.c=$(OBJDIR)/%.o)
 
 CC			=	gcc
-CFLAGS		=	-Wall -Werror -Wextra -g3
+CFLAGS		=	-Wall -Werror -Wextra #-fsanitize=thread -g3
 INCFLAGS	=	-I./$(INCLDIR)
 LFLAGS		=	-lpthread
 RM			=	/bin/rm -rf

@@ -6,7 +6,7 @@
 /*   By: flohrel <flohrel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 16:44:30 by flohrel           #+#    #+#             */
-/*   Updated: 2021/10/21 11:17:40 by flohrel          ###   ########.fr       */
+/*   Updated: 2021/10/28 14:39:16 by flohrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,16 @@
 # include <stdio.h>
 # include <stdint.h>
 # include <stdlib.h>
+# include <stdbool.h>
+# include <signal.h>
+# include <limits.h>
 # include <pthread.h>
 # include <semaphore.h>
+# include <fcntl.h>
+# include <sys/stat.h>
+# include <sys/time.h>
 # include <sys/types.h>
 # include <sys/wait.h>
-# include <sys/time.h>
-# include <limits.h>
-# include <stdbool.h>
 
 /*
 **		MACRO
@@ -42,12 +45,13 @@ typedef struct s_vars	t_vars;
 
 struct	s_philo
 {
-	int32_t			id;
-	pid_t			pid;
-	int64_t			last_meal;
-	int32_t			nb_meal;
-	t_param			*param;
-	t_philo			*next;
+	int32_t		id;
+	pid_t		pid;
+	int32_t		nb_meal;
+	int64_t		last_meal;
+	bool		has_finished;
+	t_param		*param;
+	t_philo		*next;
 };
 
 struct	s_param
@@ -59,25 +63,32 @@ struct	s_param
 	int32_t	nb_eat;
 	int64_t	start_time;
 	bool	has_ended;
+	sem_t	*lock;
+	sem_t	*message;
+	sem_t	*fork;
 };
 
 struct	s_vars
 {
-	t_param		param;
-	t_philo		*table;
+	t_param	param;
+	t_philo	*table;
 };
 
 /*
 **		FUNCTION
 */
+void		vars_init(t_vars *vars, t_param *param);
+void		semaphore_init(t_param *param, int32_t nb_philo);
+int			philo_init(int32_t nb_philo, t_philo **table, t_param *param);
 t_philo		*get_last(t_philo *philo);
 int			parser(int argc, char **argv, t_param *param);
 int64_t		get_ms_time(void);
 void		ms_sleep(int64_t value);
-void		timestamp_msg(int32_t id, char *msg, int64_t start_time);
+void		timestamp_msg(int32_t id, char *msg, int64_t start_time,
+				t_param *param);
 void		free_philo(t_philo *philo, int32_t nb_philo);
-int			philo_init(int32_t nb_philo, t_philo **table, t_param *param);
-void		philosophers(int32_t nb_philo, t_philo *philo);
+void		philosophers(int32_t nb_philo, t_philo *philo, t_vars *vars);
 void		waiter(t_vars *vars);
+int			clean_exit(int ret_value, t_vars *vars);
 
 #endif
