@@ -6,59 +6,74 @@
 /*   By: flohrel <flohrel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/14 06:58:18 by flohrel           #+#    #+#             */
-/*   Updated: 2021/10/28 14:51:54 by flohrel          ###   ########.fr       */
+/*   Updated: 2021/10/29 13:42:02 by flohrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-/*void	eat(t_philo *philo, t_param *param)
+void	eat(t_philo *philo, t_param *param)
 {
-	pthread_mutex_lock(&philo->fork);
+	sem_wait(param->fork);
 	timestamp_msg(philo->id, "has taken a fork", param->start_time, param);
-	pthread_mutex_lock(&philo->next->fork);
+	sem_wait(param->fork);
 	timestamp_msg(philo->id, "has taken a fork", param->start_time, param);
 	timestamp_msg(philo->id, "is eating", param->start_time, param);
-	pthread_mutex_lock(&param->lock);
+	ms_sleep(param->time_to_eat);
+	sem_wait(param->lock);
 	philo->last_meal = get_ms_time() - param->start_time;
 	philo->nb_meal++;
-	pthread_mutex_unlock(&param->lock);
-	ms_sleep(param->time_to_eat);
-	pthread_mutex_unlock(&philo->next->fork);
-	pthread_mutex_unlock(&philo->fork);
-}*/
+	sem_post(param->lock);
+	sem_post(param->fork);
+	sem_post(param->fork);
+}
 
-int	routine(t_vars *vars)
+void	*observe(void *arg)
 {
-	ms_sleep(1000);
-	clean_exit(EXIT_SUCCESS, vars);
-	exit (0);
-/*	t_param	*param;
+	t_philo	*philo;
+	t_param	*param;
 
 	philo = arg;
 	param = philo->param;
+	sem_wait(param->end);
+	sem_wait(param->lock);
+	philo->has_finished = true;
+	param->has_ended = true;
+	param->nb_philo--;
+	sem_post(param->end);
+	sem_post(param->lock);
+	return (NULL);
+}
+
+void	routine(t_philo *philo, t_param *param)
+{
+	pthread_t	thread_id;
+
+	pthread_create(&thread_id, NULL, observe, philo);
+	pthread_detach(thread_id);
+	pthread_create(&thread_id, NULL, waiter, philo);
+	pthread_detach(thread_id);
 	if (philo->id % 2 == 0)
 		ms_sleep(5);
 	while (1)
 	{
-		pthread_mutex_lock(&param->lock);
-		if ((philo->nb_meal == param->nb_eat) || (param->has_ended == true))
+		sem_wait(param->lock);
+		if (philo->has_finished == true)
 		{
-			philo->has_finished = true;
-			param->nb_philo--;
-			pthread_mutex_unlock(&param->lock);
+			sem_post(param->lock);
 			break ;
 		}
-		pthread_mutex_unlock(&param->lock);
+		sem_post(param->lock);
 		eat(philo, param);
 		timestamp_msg(philo->id, "is sleeping", param->start_time, param);
 		ms_sleep(param->time_to_sleep);
 		timestamp_msg(philo->id, "is thinking", param->start_time, param);
 	}
-	return (NULL);*/
+	clean_exit(EXIT_SUCCESS, true, philo);
+	exit(EXIT_SUCCESS);
 }
 
-void	philosophers(int32_t nb_philo, t_philo *philo, t_vars *vars)
+int	philosophers(int32_t nb_philo, t_philo *philo)
 {
 	int		i;
 	pid_t	pid;
@@ -68,14 +83,14 @@ void	philosophers(int32_t nb_philo, t_philo *philo, t_vars *vars)
 	{
 		pid = fork();
 		if (pid == -1)
-			clean_exit(EXIT_FAILURE, vars);
+			return (clean_exit(EXIT_FAILURE, false, philo));
 		else if (pid == 0)
-			routine(vars);
+			routine(philo, philo->param);
 		else if (pid)
 			philo->pid = pid;
 		philo = philo->next;
 	}
-	waitpid(-1, NULL, 0);
+	return (0);
 }
 
 void	free_philo(t_philo *philo, int32_t nb_philo)

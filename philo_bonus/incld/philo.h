@@ -6,7 +6,7 @@
 /*   By: flohrel <flohrel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 16:44:30 by flohrel           #+#    #+#             */
-/*   Updated: 2021/10/28 14:39:16 by flohrel          ###   ########.fr       */
+/*   Updated: 2021/10/29 13:42:58 by flohrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ struct	s_param
 	sem_t	*lock;
 	sem_t	*message;
 	sem_t	*fork;
+	sem_t	*end;
 };
 
 struct	s_vars
@@ -87,8 +88,8 @@ void		ms_sleep(int64_t value);
 void		timestamp_msg(int32_t id, char *msg, int64_t start_time,
 				t_param *param);
 void		free_philo(t_philo *philo, int32_t nb_philo);
-void		philosophers(int32_t nb_philo, t_philo *philo, t_vars *vars);
-void		waiter(t_vars *vars);
-int			clean_exit(int ret_value, t_vars *vars);
+int			philosophers(int32_t nb_philo, t_philo *philo);
+void		*waiter(void *arg);
+int			clean_exit(int ret_value, bool is_child, t_philo *table);
 
 #endif

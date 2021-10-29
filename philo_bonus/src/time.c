@@ -6,7 +6,7 @@
 /*   By: flohrel <flohrel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/14 06:12:08 by flohrel           #+#    #+#             */
-/*   Updated: 2021/10/28 14:32:14 by flohrel          ###   ########.fr       */
+/*   Updated: 2021/10/29 13:44:17 by flohrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,11 @@ void	timestamp_msg(int32_t id, char *msg, int64_t start_time, t_param *param)
 {
 	int64_t	timestamp;
 
-	sem_wait(param->lock);
 	if (param->has_ended == false)
 	{
 		timestamp = get_ms_time() - start_time;
 		printf("%ldms %d %s\n", timestamp, id, msg);
 	}
-	sem_post(param->lock);
 }
 
 void	ms_sleep(int64_t value)

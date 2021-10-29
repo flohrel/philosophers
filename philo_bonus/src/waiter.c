@@ -6,35 +6,37 @@
 /*   By: flohrel <flohrel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/16 17:49:43 by flohrel           #+#    #+#             */
-/*   Updated: 2021/10/28 14:32:33 by flohrel          ###   ########.fr       */
+/*   Updated: 2021/10/29 13:43:10 by flohrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	waiter(t_vars *vars)
+void	*waiter(void *arg)
 {
-	t_param		*param;
-	t_philo		*philo;
-	int64_t		timestamp;
+	int64_t	timestamp;
+	t_philo	*philo;
+	t_param	*param;
 
-	param = &vars->param;
-	philo = vars->table;
+	philo = arg;
+	param = philo->param;
 	while (1)
 	{
 		timestamp = get_ms_time() - param->start_time;
-//		pthread_mutex_lock(&param->lock);
+		sem_wait(param->lock);
 		if (!philo->has_finished
 			&& (timestamp - philo->last_meal) > param->time_to_die)
 		{
+			sem_post(param->end);
 			printf("%ldms %d died\n", timestamp, philo->id);
-			param->has_ended = true;
 			break ;
 		}
 		if (param->nb_philo == 0)
 			break ;
-//		pthread_mutex_unlock(&param->lock);
-		philo = philo->next;
+		sem_post(param->lock);
 	}
-//	pthread_mutex_unlock(&param->lock);
+	philo->has_finished = true;
+	param->nb_philo--;
+	sem_post(param->lock);
+	return (NULL);
 }
