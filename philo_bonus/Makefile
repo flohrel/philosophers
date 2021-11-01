@@ -13,8 +13,7 @@ SRC			=	main.c \
 				parse.c \
 				philo.c \
 				time.c \
-				utils.c \
-				waiter.c
+				utils.c
 OBJ			=	$(SRC:%.c=$(OBJDIR)/%.o)
 
 CC			=	gcc

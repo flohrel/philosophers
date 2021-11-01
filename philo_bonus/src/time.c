@@ -6,7 +6,7 @@
 /*   By: flohrel <flohrel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/14 06:12:08 by flohrel           #+#    #+#             */
-/*   Updated: 2021/10/29 13:44:17 by flohrel          ###   ########.fr       */
+/*   Updated: 2021/11/01 21:21:56 by flohrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,6 @@ int64_t	get_ms_time(void)
 
 	gettimeofday(&time, NULL);
 	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
-}
-
-void	timestamp_msg(int32_t id, char *msg, int64_t start_time, t_param *param)
-{
-	int64_t	timestamp;
-
-	if (param->has_ended == false)
-	{
-		timestamp = get_ms_time() - start_time;
-		printf("%ldms %d %s\n", timestamp, id, msg);
-	}
 }
 
 void	ms_sleep(int64_t value)

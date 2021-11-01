@@ -6,7 +6,7 @@
 /*   By: flohrel <flohrel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/12 17:21:07 by flohrel           #+#    #+#             */
-/*   Updated: 2021/10/16 20:21:07 by flohrel          ###   ########.fr       */
+/*   Updated: 2021/11/01 23:30:11 by flohrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,10 @@ static int	ft_atoi(const char *nptr)
 	return (nb);
 }
 
-int	parser(int argc, char **argv, t_param *param)
+void	parser(int argc, char **argv, t_param *param)
 {
 	if ((argc < 5) || (argc > 6))
-		return (-1);
+		exit(EXIT_FAILURE);
 	param->nb_philo = ft_atoi(argv[1]);
 	param->time_to_die = ft_atoi(argv[2]);
 	param->time_to_eat = ft_atoi(argv[3]);
@@ -62,12 +62,11 @@ int	parser(int argc, char **argv, t_param *param)
 		|| (param->time_to_die < 0)
 		|| (param->time_to_eat < 1)
 		|| (param->time_to_sleep < 0))
-		return (-1);
+		exit(EXIT_FAILURE);
 	if (argc == 6)
 	{
-		param->nb_eat = ft_atoi(argv[5]);
-		if (param->nb_eat < 1)
-			return (-1);
+		param->nb_meal = ft_atoi(argv[5]);
+		if (param->nb_meal < 1)
+			exit(EXIT_FAILURE);
 	}
-	return (0);
 }
