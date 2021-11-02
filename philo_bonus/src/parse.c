@@ -6,7 +6,7 @@
 /*   By: flohrel <flohrel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/12 17:21:07 by flohrel           #+#    #+#             */
-/*   Updated: 2021/11/01 23:30:11 by flohrel          ###   ########.fr       */
+/*   Updated: 2021/11/02 11:40:20 by flohrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	parser(int argc, char **argv, t_param *param)
 	param->time_to_die = ft_atoi(argv[2]);
 	param->time_to_eat = ft_atoi(argv[3]);
 	param->time_to_sleep = ft_atoi(argv[4]);
-	if ((param->nb_philo < 1) || (param->nb_philo > THREADS_MAX)
+	if ((param->nb_philo < 1) || (param->nb_philo > PROCESS_MAX)
 		|| (param->time_to_die < 0)
 		|| (param->time_to_eat < 1)
 		|| (param->time_to_sleep < 0))

@@ -6,20 +6,11 @@
 /*   By: flohrel <flohrel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/14 06:58:18 by flohrel           #+#    #+#             */
-/*   Updated: 2021/11/02 00:03:44 by flohrel          ###   ########.fr       */
+/*   Updated: 2021/11/02 12:56:54 by flohrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-void	unlock_end(t_param *param)
-{
-	int	i;
-
-	i = param->nb_philo;
-	while (i--)
-		sem_post(param->end);
-}
 
 void	*waiter(void *arg)
 {
@@ -27,83 +18,105 @@ void	*waiter(void *arg)
 	t_param	*param;
 	int64_t	timestamp;
 
-	philo = arg;
-	param = philo->param;
+	philo = &((t_vars *)arg)->philo;
+	param = &((t_vars *)arg)->param;
 	while (1)
 	{
 		timestamp = get_ms_time() - param->start_time;
-		sem_wait(param->lock);
+		sem_wait(((t_vars *)arg)->sem.lock);
 		if ((timestamp - philo->last_meal) > param->time_to_die)
 		{
-			printf("%ldms %d died\n", timestamp, philo->id);
-			unlock_end(param);
-			break ;
+			timestamp_msg("died", philo, param, &((t_vars *)arg)->sem);
+			sem_wait(((t_vars *)arg)->sem.message);
+			exit(0);
 		}
-		if (philo->nb_meal == param->nb_meal)
+		if ((param->nb_meal != -1) && (philo->nb_meal == param->nb_meal))
 		{
-			philo->is_alive = false;
+			sem_post(((t_vars *)arg)->sem.end);
 			break ;
 		}
-		sem_post(param->lock);
+		sem_post(((t_vars *)arg)->sem.lock);
 	}
-	sem_post(param->lock);
+	sem_post(((t_vars *)arg)->sem.lock);
 	return (NULL);
 }
 
-void	*leaver(void *arg)
+void	eat(t_philo *philo, t_param *param, t_sem *sem)
 {
-	t_philo	*philo;
-	t_param	*param;
-
-	philo = arg;
-	param = philo->param;
-	sem_wait(param->end);
-	sem_wait(param->lock);
-	philo->is_alive = false;
-	sem_post(param->lock);
-	printf("leaving...\n");
-	ms_sleep(1000);
-	return (NULL);
+	sem_wait(sem->fork);
+	timestamp_msg("has taken a fork", philo, param, sem);
+	sem_wait(sem->fork);
+	timestamp_msg("has taken a fork", philo, param, sem);
+	timestamp_msg("is eating", philo, param, sem);
+	sem_wait(sem->lock);
+	philo->last_meal = get_ms_time() - param->start_time;
+	philo->nb_meal++;
+	sem_post(sem->lock);
+	ms_sleep(param->time_to_eat);
+	sem_post(sem->fork);
+	sem_post(sem->fork);
 }
 
-void	routine(t_philo *philo, t_param *param)
+void	routine(t_vars *vars)
 {
-	pthread_t	thread1;
-	pthread_t	thread2;
+	pthread_t	tid;
 
-	pthread_create(&thread1, NULL, waiter, philo);
-	pthread_detach(thread1);
-	pthread_create(&thread2, NULL, leaver, philo);
-	pthread_detach(thread2);
+	pthread_create(&tid, NULL, waiter, vars);
+	if (vars->philo.id % 2 == 0)
+		ms_sleep(5);
 	while (1)
 	{
-		sem_wait(param->lock);
-		if (philo->is_alive == false)
-		{
-			sem_post(param->lock);
-			break ;
-		}
-		sem_post(param->lock);
-		ms_sleep(1000);
+		eat(&vars->philo, &vars->param, &vars->sem);
+		timestamp_msg("is sleeping", &vars->philo, &vars->param, &vars->sem);
+		ms_sleep(vars->param.time_to_sleep);
+		timestamp_msg("is thinking", &vars->philo, &vars->param, &vars->sem);
 	}
-	clean_exit(EXIT_SUCCESS, true, philo);
 }
 
-void	philosophers(int32_t nb_philo, t_philo *philo)
+void	*meal_observer(void *arg)
 {
-	int32_t	i;
-	pid_t	pid;
+	t_vars	*vars;
+	t_sem	*sem;
+	t_param	*param;
+	int		i;
 
-	i = nb_philo;
-	while (i--)
+	vars = arg;
+	sem = &vars->sem;
+	param = &vars->param;
+	i = -1;
+	while (++i < param->nb_philo)
+		sem_wait(sem->end);
+	i = -1;
+	while (++i < param->nb_philo)
+		kill(vars->pid[i], SIGTERM);
+	return (NULL);
+}
+
+void	philosophers(t_vars *vars)
+{
+	int32_t		i;
+	pid_t		pid;
+	pthread_t	tid;
+
+	i = -1;
+	while (++i < vars->param.nb_philo)
 	{
 		pid = fork();
 		if (pid == -1)
-			clean_exit(EXIT_FAILURE, false, philo);
+			clean_exit(EXIT_FAILURE, false, &vars->sem);
 		else if (pid == 0)
-			routine(philo, philo->param);
+		{
+			vars->philo.id = i + 1;
+			routine(vars);
+			i = vars->param.nb_philo;
+		}
 		else
-			philo->pid = pid;
-		philo = philo->next;
+			vars->pid[i] = pid;
 	}
+	if (vars->param.nb_meal != -1)
+	{
+		pthread_create(&tid, NULL, meal_observer, vars);
+		pthread_detach(tid);
+	}
+	waitpid(-1, NULL, 0);
 }
