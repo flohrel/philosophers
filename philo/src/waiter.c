@@ -6,7 +6,7 @@
 /*   By: flohrel <flohrel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/16 17:49:43 by flohrel           #+#    #+#             */
-/*   Updated: 2021/11/02 16:10:07 by flohrel          ###   ########.fr       */
+/*   Updated: 2021/11/02 17:21:30 by flohrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	waiter(t_vars *vars)
 		if (!philo->has_finished
 			&& (timestamp - philo->last_meal) > param->time_to_die)
 		{
-			printf("%lldms %d died\n", timestamp, philo->id);
+			printf("%ldms %d died\n", timestamp, philo->id);
 			param->has_ended = true;
 			break ;
 		}

@@ -17,7 +17,7 @@ SRC			=	main.c \
 OBJ			=	$(SRC:%.c=$(OBJDIR)/%.o)
 
 CC			=	gcc
-CFLAGS		=	-Wall -Werror -Wextra #-fsanitize=thread -g3
+CFLAGS		=	-Wall -Werror -Wextra
 INCFLAGS	=	-I./$(INCLDIR)
 LFLAGS		=	-lpthread
 RM			=	/bin/rm -rf
