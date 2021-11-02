@@ -6,7 +6,7 @@
 /*   By: flohrel <flohrel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/14 10:48:05 by flohrel           #+#    #+#             */
-/*   Updated: 2021/11/02 11:49:47 by flohrel          ###   ########.fr       */
+/*   Updated: 2021/11/02 16:23:38 by flohrel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,6 @@ void	timestamp_msg(char *msg, t_philo *philo, t_param *param, t_sem *sem)
 
 	sem_wait(sem->message);
 	timestamp = get_ms_time() - param->start_time;
-	printf("%ldms %d %s\n", timestamp, philo->id, msg);
+	printf("%lldms %d %s\n", timestamp, philo->id, msg);
 	sem_post(sem->message);
 }
